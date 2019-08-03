@@ -1,6 +1,8 @@
 dj-database-url==0.5.0
 Django==2.2.4
 django-heroku==0.3.1
+django-rest-framework==0.1.0
+djangorestframework==3.10.2
 gunicorn==19.9.0
 icalendar==4.0.3
 psycopg2==2.8.3
