@@ -1,0 +1,116 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>NexusMap - Contacto</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/estilo.css' %}" media="screen">
+
+</head>
+
+<body class="bg-gradient-primary" >
+
+  <div class="container" >
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-contactus-image"></div>
+          <div class="col-lg-7">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Contáctanos</h1>
+              </div>
+              <form class="user" id="contactanos">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user" id="firstName" required placeholder="Nombre">
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control form-control-user" id="lastName" required placeholder="Apellidos">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" id="inputEmail" required placeholder="Correo electrónico de contacto">
+                </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                  <input type="date" class="form-control form-control-user" id="inputBornDate" required >
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                  <input type="text" class="form-control form-control-user" id="inputPlace" required placeholder="Lugar de origen" list="provincias" name="provincias" >
+                  <datalist id="provincias">
+                    <option value="Azuay">
+                    <option value="Bolívar">
+                    <option value="Cañar">
+                    <option value="Carchi">
+                    <option value="Chimborazo">
+                    <option value="Cotopaxi">
+                    <option value="El Oro">
+                    <option value="Esmeraldas">
+                    <option value="Galápagos">
+                    <option value="Guayas">
+                    <option value="Imbabura">
+                    <option value="Loja">
+                    <option value="Los Ríos">
+                    <option value="Manabí">
+                    <option value="Morona Santiago">
+                    <option value="Napo">
+                    <option value="Orellana">
+                    <option value="Pastaza">
+                    <option value="Pichincha">
+                    <option value="Santa Elena">
+                    <option value="Santo Domingo de los Tsáchilas">
+                    <option value="Sucumbios">
+                    <option value="Tungurahua">
+                    <option value="Zamira Chinchipe">
+                  </datalist>
+                </div>       
+              </div>
+              <div class="form-group">   
+                  <textarea required class=form-control id= textbox name="Text1" rows="6" placeholder="Comentarios"></textarea>
+              </div>
+              <div>
+                <input type="submit" value="Submit" class="btn btn-primary btn-user btn-block" id="contactus">            
+              </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <script src="{% static 'js/base.js' %}"></script>
+  <script src="{% static 'js/notify.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+  <script src="{% static 'js/contactus-script.js' %}"></script>
+
+</body>
+
+</html>

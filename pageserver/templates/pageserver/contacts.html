@@ -1,0 +1,371 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>NexusMap</title>
+
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+
+  <!--link para estilos -->
+  <link rel="stylesheet" href="{% static 'css/estilo.css' %}" media="screen">
+
+  <!-- intro.JS CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.min.css" integrity="sha256-/oZ7h/Jkj6AfibN/zTWrCoba0L+QhP9Tf/ZSgyZJCnY=" crossorigin="anonymous" />
+</head>
+
+<body id="page-top" class="sidebar-toggled">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <li>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
+          <div class="sidebar-brand-icon rotate-n-15">
+            <i class="far fa-map"></i>
+          </div>
+          <div class="sidebar-brand-text mx-3">NexusMap</div>
+        </a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider my-0">
+      </li>
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">
+          <i class="fas fa-fw fa-home"></i>
+          <span>Inicio</span></a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider">
+      </li>
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'view_events' %}">
+          <i class="fas fa-fw fa-calendar-alt"></i>
+          <span>Eventos</span></a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider">
+      </li>
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'contacts' %}">
+          <i class="fa fa-list-ul"></i>
+          <span>Contactos</span></a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider">
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'quehacemos' %}">
+          <i class="fa fa-question"></i>
+          <span>Qué hacemos </span></a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider my-0">
+      </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button v-on:click="toggleSidebar" id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Search -->
+          <form v-on:submit.prevent="filterTextA" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+              <input id="filterTextA" type="text" class="form-control bg-light border-0 small" placeholder="Buscar contactos..." aria-label="Search">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form v-on:submit.prevent="filterTextB" class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input id="filterTextB" type="text" class="form-control bg-light border-0 small" placeholder="Buscar contactos..." aria-label="Search">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+            <li class="nav-item" id="admin-button" style="display: none;">
+              <a class="nav-link" href="{% url 'admin_home' %}">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
+                <i class="fas fa-cog"></i>
+              </a>
+            </li>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar Sesión</span>
+                <i class="fas fa-user-circle"></i>
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="{% url 'user_profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Perfil
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Cerrar Sesión
+                </a>
+              </div>
+            </li>
+
+          </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="page-content">
+
+          <!-- Page Heading -->
+          <h1 class="h3 mb-4 text-gray-800">Contactos</h1>
+
+          <div id="welcome" class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Bienvenido a Contactos</h6>
+              <div class="dropdown no-arrow">
+                <a v-on:click="closeWell" id="close-well" href="#" class="btn btn-danger btn-circle btn-sm">
+                  <i class="fa fa-minus"></i>
+                </a>
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col mr-6">
+                  <h2 class="h4 mb-1 text-gray-800">Desde aquí podrás:</h2>
+                  <ul>
+                    <li>Buscar a tus amigos con cuenta en NexusMap.</li>
+                    <li>Buscar a tus amigos en el mapa.</li>
+
+                  </ul>
+                </div>
+                <div class="col mr-6 hideThis">
+                  <img class="img-welcome img-thumbnail" src="{% static 'img/contactos-welcome.jpg' %}" alt="welcome image">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contacts generales -->
+          <div v-if="loggedIn" id="cuerpo-login" class="row">
+            <!-- Columna Izquierda -->
+            <div class="col-lg-8">
+
+              <!-- Basic Card Example -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Resultados</h6>
+                </div>
+                <div class="card-body">
+                  <div v-if="!anyResults && !searched" class="alert alert-primary">
+                    Haz una búsqueda para ver resultados aquí.
+                  </div>
+                  <div v-if="!anyResults && searched" class="alert alert-warning">
+                    ¡No hay personas que coincidan con la búsqueda!
+                  </div>
+                  <div v-if="anyResults" class="row">
+                    <!-- Profile Card Example -->
+                    <div v-for="u in results" class="col-lg-6 my-2">
+                      <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-11">
+                              <div class="font-weight-bold text-primary mb-3">{% verbatim %}{{u.NAMES+" "+u.LASTNAMES}}{%endverbatim %}</div>
+                            </div>
+                            <div class="col-auto">
+                              <a v-on:click="makeFriend(u)" href="#">
+                                <i class="fas fa-user-plus fa-2x"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Profile Card -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <!-- Columna derecha -->
+            <div class="col-lg-4">
+              <!-- Collapsable Card Friends -->
+              <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#collapseCardFriends" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true">
+                  <h6 class="m-0 font-weight-bold text-primary">Amigos</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse show" id="collapseCardFriends">
+                  <div class="card-body">
+                    <!-- Add here Groups Cards. -->
+                    <div v-if="!anyFriends" class="alert alert-warning">No tienes amigos :(</div>
+                    <div v-for="f in friends" class="col-lg-12">
+                      <div class="card border-left-primary shadow h-100 py-2 my-2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <!-- <div class="col mr-11">
+                              <img class="img-user rounded-circle" src="img/user-female-small.jpg">
+                            </div> -->
+                            <div class="col mr-11">
+                              <div class="font-weight-bold text-primary ">{% verbatim %}{{f.NAMES + " " + f.LASTNAMES}}{%endverbatim %}</div>
+                            </div>
+                            <div class="col-auto">
+                              <a v-on:click="locate(f.EMAIL)" class="search-friend" href="#">
+                                <i class="fas fa-search-location fa-2x"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.En caso de no Estar logeado -->
+          <div v-if="!loggedIn" class='alert alert-warning' role='alert'>¡Inicie sesión para ver su lista de contactos!</div>
+          <!-- /.container-fluid -->
+        </div>
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer ">
+        <div class=" py-2 container my-auto">
+          <div class="copyright text-center my-auto">
+            Contáctenos: <a href="{% url 'contactus' %}">NexusMap</a>
+            |
+            <a href="#" onclick="introJs().start()">Visita guiada</a>
+          </div>
+        </div>
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto ">
+            <a class="px-5" href="{% url 'aboutus' %}">Acerca de nosotros</a>
+            <a class="px-5" href="{% url 'team' %}">Equipo</a>
+            <a class="px-5" href="{% url 'news' %}">Noticias</a>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">¿Cerrar sesi&oacute;n?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Confirme si desea cerrar su sesi&oacute;n.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+          <a class="btn btn-primary" href="#">Cerrar sesi&oacute;n</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="{% static 'js/notify.min.js' %}"></script>
+  <script src="{% static 'js/base.js' %}"></script>
+  <script src="{% static 'js/contacts-scripts.js' %}"></script>
+
+  <!-- intro.js JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.js"></script>
+</body>
+
+</html>

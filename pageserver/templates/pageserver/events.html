@@ -1,0 +1,334 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>NexusMap - Events</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+  <!--Aplicar iconos de google -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+
+  <!--link para estilos -->
+  <link rel="stylesheet" href="{% static 'css/estilo.css' %}" media="screen">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+  <!-- intro.js CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css">
+</head>
+
+<body id="page-top" class="sidebar-toggled">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="side-nav fixed navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <li>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'index' %}">
+          <div class="sidebar-brand-icon rotate-n-15">
+            <i class="far fa-map"></i>
+          </div>
+          <div class="sidebar-brand-text mx-3">NexusMap</div>
+        </a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider my-0">
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">
+          <i class="fas fa-fw fa-home"></i>
+          <span>Inicio</span></a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider">
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'view_events' %}">
+          <i class="fas fa-fw fa-calendar-alt"></i>
+          <span>Eventos</span></a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider">
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'contacts' %}">
+          <i class="fa fa-list-ul"></i>
+          <span>Contactos</span></a>
+      </li>
+
+      <li>
+        <hr class="sidebar-divider">
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'quehacemos' %}">
+          <i class="fa fa-question"></i>
+          <span>Qué hacemos </span></a>
+      </li>
+
+      <!-- Divider -->
+      <li>
+        <hr class="sidebar-divider my-0">
+      </li>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button v-on:click="toggleSidebar" id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Search -->
+          <form v-on:submit.prevent="filterTextA" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" data-intro="Busque eventos de interés aquí" data-step="1">
+            <div class="input-group">
+              <input id="filterTextA" type="text" class="form-control bg-light border-0 small" placeholder="Buscar evento..." aria-label="Search">
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form v-on:submit.prevent="filterTextB" class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input id="filterTextB" type="text" class="form-control bg-light border-0 small" placeholder="Buscar evento..." aria-label="Search">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+            <li class="nav-item" id="admin-button" style="display: none;">
+              <a class="nav-link" href="{% url 'admin_home' %}">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
+                <i class="fas fa-cog"></i>
+              </a>
+            </li>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar sesión</span>
+                <i class="fas fa-user-circle"></i>
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="{% url 'user_profile' %}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Perfil
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Cerrar sesión
+                </a>
+              </div>
+            </li>
+
+          </ul>
+        </nav>
+
+        <!-- Begin Page Content -->
+        <div class="page-content">
+          <h1 class="h3 mb-4 text-gray-800">Próximos Eventos </h1>
+          <div id="welcome" class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Bienvenido a Eventos</h6>
+              <div class="dropdown no-arrow">
+                <a id="close-well" v-on:click="closeWell" href="#" class="btn btn-danger btn-circle btn-sm">
+                  <i class="fa fa-minus"></i>
+                </a>
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="row">
+                <div class="col mr-6">
+                  <p>Aquí encontrarás una gran variedad de eventos que se llevarán a cabo en las instalaciones de la ESPOL, si algún evento en especial te interesa podrás visualizar en el mapa una ruta de llegada en base a tu ubicación actual,
+                    además si
+                    inicias sesión podrás guardar eventos.</p>
+                  <p>Revisa la <a href="#" onclick="introJs().start()">Visita guiada</a> para ver más detalles.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Upcoming events list -->
+            <div class="col-sm-8" id="all_events">
+              <ul class="list-group" data-intro="Los eventos próximos aparecen aquí." data-index="2">
+                <li v-for="(v,k) in events" class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <h4><span>{% verbatim %}{{v[0]}}{%endverbatim %}</span> <small v-if="loggedIn" class="text-muted"><a id="p" href="#" v-on:click="saveEv(k,v)">Guardar</a></small></h4>
+                    <p class="mb-1">{% verbatim %}{{v[1]}}{%endverbatim %}</p>
+                    <small>{% verbatim %}{{prettyDate(v[3])}}{%endverbatim %}</small>
+                  </div>
+                  <a v-bind:href="link(v)"><i class="material-icons md-48">arrow_forward_ios</i></a>
+                </li>
+              </ul>
+              <div v-if="noEvents" class='alert alert-warning' role='alert'>
+                ¡No hay eventos disponibles!
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <!-- Search by date -->
+              <section data-intro="Aqui puede filtrar los eventos." data-index="4">
+                <h4>Filtro por fecha</h4>
+                <div class="mb-4">
+                  <div class="form-group">
+                    <label for="from">Desde: </label>
+                    <input id="from" name="from" class="form-control" type="date">
+                  </div>
+                  <div class="form-group">
+                    <label for="to">Hasta: </label>
+                    <input id="to" name="to" class="form-control" type="date">
+                  </div>
+                  <button v-on:click="filterDate" class="btn btn-primary"><i class="material-icons md-48">filter_list</i> Filtrar</button>
+                </div>
+              </section>
+
+              <!-- My saved events -->
+              <section id="mis-eventos" data-intro="Los eventos guardados por el usuario aparecen aquí." data-index="5">
+                <h4>Mis eventos</h4>
+                <ul v-if="loggedIn" class="list-group">
+                  <li v-for="(v,k) in myEvents" class="list-group-item d-flex justify-content-between align-items-center">
+                    {% verbatim %}{{v[0]}}{%endverbatim %}
+                    <div>
+                      <a v-on:click="deleteEv(k)" href="#"><i class="material-icons md-48">close</i></a>
+                      <a v-bind:href="link(v)"><i class="material-icons md-48">arrow_forward_ios</i></a>
+                    </div>
+                  </li>
+                </ul>
+                <div v-if="noMyEvents && loggedIn" class='alert alert-warning' role='alert'>
+                  ¡No hay eventos guardados!
+                </div>
+                <div v-if="!loggedIn" class='alert alert-warning' role='alert'>
+                  ¡Inicie sesión para ver su lista de eventos y guardar eventos!
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="sticky-footer ">
+        <div class=" py-2 container my-auto">
+          <div class="copyright text-center my-auto">
+            Contáctenos: <a href="{% url 'contactus' %}">NexusMap</a> | <a href="#" onclick="introJs().start()">Visita guiada</a>
+          </div>
+        </div>
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto ">
+            <a class="px-5" href="{% url 'aboutus' %}">Acerca de nosotros</a>
+            <a class="px-5" href="{% url 'team' %}">Equipo</a>
+            <a class="px-5" href="{% url 'news' %}">Noticias</a>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">¿Cerrar sesi&oacute;n?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Confirme si desea cerrar su sesi&oacute;n.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+          <a class="btn btn-primary" href="#">Cerrar sesi&oacute;n</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="{% static 'js/base.js' %}"></script>
+  <script src="{% static 'js/eventos-script.js' %}"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+
+  <!-- intro.js JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.js"></script>
+</body>
+
+</html>

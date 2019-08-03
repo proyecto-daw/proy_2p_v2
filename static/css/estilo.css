@@ -1,0 +1,177 @@
+header {
+  background-color: darkblue;
+  color: white;
+  text-align: left;
+  padding: 1% 1% 1% 1%;
+}
+
+nav {
+  background-color: darkblue;
+}
+
+footer {
+  background-color: #224abe;
+}
+
+section {
+  padding: 20px;
+}
+
+img {
+  width: 100%;
+}
+
+/* Cursor changes when placed over table row (hint for click) */
+.table-hover tr:hover {
+  cursor: pointer;
+}
+
+/* Doesn't apply to table header */
+.table-hover thead tr:hover {
+  cursor: auto;
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+#myProgress {
+  width: 75%;
+  background-color: grey;
+  text-align: center;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: green;
+}
+
+footer {
+  color: white;
+}
+
+footer a {
+  color: lightgray;
+}
+
+footer a:hover {
+  color: black;
+}
+
+#notSearch {
+  visibility: hidden;
+}
+
+.notifyjs-request-base {
+  opacity: 0.85;
+  width: 300px;
+  background: #F5F5F5;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.notifyjs-request-base .title {
+  width: 170px;
+  float: left;
+  margin: 10px 0 0 10px;
+  text-align: right;
+}
+
+.notifyjs-request-base .buttons {
+  width: 100px;
+  float: right;
+  font-size: 11px;
+  padding: 5px;
+  margin: 2px;
+}
+
+.notifyjs-request-base button {
+  font-size: 11px;
+  padding: 5px;
+  margin: 2px;
+  width: 80px;
+}
+
+.notifyjs-response-base {
+  opacity: 0.85;
+  width: 300px;
+  background: #F5F5F5;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.notifyjs-response-base .title {
+  width: 170px;
+  float: left;
+  margin: 10px 0 0 10px;
+  text-align: right;
+}
+
+.notifyjs-response-base .buttons {
+  width: 100px;
+  float: right;
+  font-size: 11px;
+  padding: 5px;
+  margin: 2px;
+}
+
+.notifyjs-response-base button {
+  font-size: 11px;
+  padding: 5px;
+  margin: 2px;
+  width: 80px;
+}
+
+#textbox {
+  border-radius: 40px;
+}
+
+#h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* -sm and up */
+@media (min-width: 576px) {
+  .page-content {
+    padding: 3rem !important;
+  }
+
+  #mapid {
+    height: 600px;
+    position: relative;
+    outline: none;
+    display: block;
+    border-radius: .35rem;
+  }
+}
+
+/* -xs */
+@media (max-width: 575px) {
+  .page-content {
+    padding: .5rem !important;
+  }
+
+  .step-content {
+    margin-left: 1rem!important;
+  }
+
+  #mapid {
+    height: 300px;
+    position: relative;
+    outline: none;
+    display: block;
+    border-radius: .35rem;
+  }
+}
+
+.page-content {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
