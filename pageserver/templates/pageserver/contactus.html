@@ -37,10 +37,11 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Contáctanos</h1>
               </div>
-              <form class="user" id="contactanos">
+              <form action="" method="POST" class="user" id="contactanos">
+			    {% csrf_token %}
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="firstName" required placeholder="Nombre">
+                    <input type="text" class="form-control form-control-user" id="firstName" name="firstName" required placeholder="Nombre">
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" id="lastName" required placeholder="Apellidos">
