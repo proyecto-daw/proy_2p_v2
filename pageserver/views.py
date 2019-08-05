@@ -40,7 +40,10 @@ def news(request):
 
 
 def login(request):
-    return HttpResponse()
+    return render(request, "pageserver/login.html")
+
+def register(request):
+    return render(request, "pageserver/register.html")
 
 
 def user_profile(request):

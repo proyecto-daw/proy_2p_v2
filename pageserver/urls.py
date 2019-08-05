@@ -29,4 +29,5 @@ urlpatterns = [
     path('news', views.news, name="news"),
     path('login', views.login, name="login"),
     path('profile', views.user_profile, name="user_profile"),
+    path('register', views.register, name="register"),
 ]
