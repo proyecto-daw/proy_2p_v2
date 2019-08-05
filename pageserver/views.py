@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-
 # Create your views here.
 def aboutus(request):
     return render(request, "pageserver/aboutus.html")
@@ -28,6 +27,8 @@ def admin_home(request):
 
 
 def contactus(request):
+    if request.method == 'POST':
+        print(request.POST["firstName"])
     return render(request, "pageserver/contactus.html")
 
 
