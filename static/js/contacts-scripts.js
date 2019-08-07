@@ -60,13 +60,10 @@ $(document).ready(function() {
           this.results = [];
           return;
         }
-
         $.ajax({
           url: "search_people",
-          method: "POST",
+          method: "GET",
           data: {
-            "username": user.EMAIL,
-            "password": user.PASSWORD,
             "query": text
           },
           success: function(data, status) {
@@ -79,8 +76,6 @@ $(document).ready(function() {
           url: "add_friend",
           method: "POST",
           data: {
-            "username": user.EMAIL,
-            "password": user.PASSWORD,
             "friend": u.EMAIL
           },
           success: function(data, status) {
@@ -126,8 +121,6 @@ function locate(email) {
     url: "ask_position",
     method: "POST",
     data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
       "friend_email": email,
       "message": message
     },

@@ -44,7 +44,7 @@ $(document).ready(function() {
         return moment(d).format('MMMM D YYYY, h:mm A')
       },
       link: function(ev) {
-        return "home?towp=" + ev[2];
+        return "/?towp=" + ev[2];
       },
       filterDate: function() {
         let filtered = {};
@@ -66,7 +66,7 @@ $(document).ready(function() {
         }
 
         for (let e in this.events) {
-          let eventDate = new Date(this.events[e][3]);
+          let eventDate = new Date(this.events[e].start_datetime);
           if ((eventDate >= start) && (eventDate <= end)) {
             filtered[e] = this.events[e];
           }
@@ -87,8 +87,8 @@ $(document).ready(function() {
 
         let filtered = {};
         for (let e in this.events) {
-          if (this.events[e][0].toLowerCase().includes(text.toLowerCase())) {
-            filtered[e] = this.events[e]
+          if (this.events[e].name.toLowerCase().includes(text.toLowerCase())) {
+            filtered[e] = this.events[e];
           }
         }
         this.events = filtered;
@@ -110,10 +110,10 @@ $(document).ready(function() {
 
 function getEvents() {
   $.ajax({
-    url: "events",
+    url: "api/events",
     method: "GET",
     success: function(data, status) {
-      app.events = data.events;
+      app.events = data;
     }
   });
 }
@@ -121,11 +121,7 @@ function getEvents() {
 function getMyEvents() {
   $.ajax({
     url: "get_my_events",
-    method: "POST",
-    data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD
-    },
+    method: "GET",
     success: function(data, status) {
       app.myEvents = data.events;
     }
@@ -137,12 +133,10 @@ function saveEvent(id, ev) {
     url: "add_my_event",
     method: "POST",
     data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
       "event": id
     },
     success: function(data, status) {
-      app.$set(app.myEvents, id, ev);
+      app.$set(app.myEvents, id, [ev.name, ev.place, ev.closest_waypoint_pk, ev.start_datetime]);
     }
   });
 }
@@ -152,8 +146,6 @@ function deleteEvent(id) {
     url: "remove_my_event",
     method: "POST",
     data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
       "event": id
     },
     success: function(data, status) {

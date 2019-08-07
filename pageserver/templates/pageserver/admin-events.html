@@ -202,11 +202,11 @@
                 </thead>
                 <tbody>
                   <tr v-for="(v,k) in events" v-on:click="rowClicked(k)">
-                    <th>{% verbatim %}{{k}}{%endverbatim %}</th>
-                    <td>{% verbatim %}{{v[0]}}{%endverbatim %}</td>
-                    <td>{% verbatim %}{{v[1]}}{%endverbatim %}</td>
-                    <td>{% verbatim %}{{waypoints[v[2]][2]}}{%endverbatim %}</td>
-                    <td>{% verbatim %}{{format(v[3])}}{%endverbatim %}</td>
+                    <th>{% verbatim %}{{v.pk}}{%endverbatim %}</th>
+                    <td>{% verbatim %}{{v.name}}{%endverbatim %}</td>
+                    <td>{% verbatim %}{{v.place}}{%endverbatim %}</td>
+                    <td>{% verbatim %}{{waypoints[v.closest_waypoint_pk].name}}{%endverbatim %}</td>
+                    <td>{% verbatim %}{{format(v.start_datetime)}}{%endverbatim %}</td>
                   </tr>
                   <tr id="edit-row">
                     <th><span id="targetId">*</span></th>

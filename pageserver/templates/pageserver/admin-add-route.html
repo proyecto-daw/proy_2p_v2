@@ -217,7 +217,7 @@
                             <label for="source">Origen</label>
                             <select v-model="chosenSourceIndex" class="custom-select" name="source" id="source">
                               {% verbatim %}
-                                <option v-for="(v,k) in waypoints" v-bind:value="k">{{v[2]}}</option>
+                                <option v-for="(v,k) in waypoints" v-bind:value="k">{{v.name}}</option>
                               {% endverbatim %}
                             </select>
                           </div>
@@ -239,7 +239,7 @@
                         <div v-if="onStep(2)" class="step-content grey lighten-3">
                           <ul>
                             {% verbatim %}
-                              <li v-for="neigh in neighborsOfChosen">{{chosenSource[2]}} → {{waypoints[neigh[0]][2]}} ({{neigh[1]}} metros)</li>
+                              <li v-for="neigh in neighborsOfChosen">{{chosenSource.name}} → {{waypoints[neigh.target_pk].name}} ({{neigh.distance}} metros)</li>
                             {% endverbatim %}
                           </ul>
                         </div>
@@ -267,7 +267,7 @@
                             <label for="target">Destino</label>
                             <select form="form" v-model="chosenTargetIndex" class="custom-select" name="target" id="target">
                               {% verbatim %}
-                                <option v-for="x in notNeighborsOfChosen" v-bind:value="x">{{waypoints[x][2]}}</option>
+                                <option v-for="x in notNeighborsOfChosen" v-bind:value="x">{{waypoints[x].name}}</option>
                               {% endverbatim %}
                             </select>
                           </div>

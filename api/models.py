@@ -12,7 +12,7 @@ class Waypoint(models.Model):
     longitude = models.FloatField()
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    neighbor_waypoints = models.ManyToManyField("self", through="Route", symmetrical=False)
+    neighbor_waypoints = models.ManyToManyField("self", through="Route", symmetrical=False, blank=True)
 
     def __str__(self):
         return f"WP {self.name}"

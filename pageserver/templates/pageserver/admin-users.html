@@ -205,9 +205,9 @@
                 </thead>
                 <tbody>
                   <tr v-for="(v,k) in users">
-                    <th>{% verbatim %}{{v.ID}}{% endverbatim %}</th>
-                    <td>{% verbatim %}{{v.USERNAME}}{% endverbatim %}</td>
-                    <td>{% verbatim %}{{v.EMAIL}}{% endverbatim %}</td>
+                    <th>{% verbatim %}{{v.pk}}{% endverbatim %}</th>
+                    <td>{% verbatim %}{{v.username}}{% endverbatim %}</td>
+                    <td>{% verbatim %}{{v.email}}{% endverbatim %}</td>
                     <td>{% verbatim %}{{fullName(v)}}{%endverbatim %}</td>
                     <td><span v-bind:class="[isAdmin(v) ? 'fa-check' : 'fa-times', 'fa']" v-on:click="adminUnadminUser(v)"></span></td>
                     <td><span v-bind:class="[isBlocked(v) ? 'fa-check' : 'fa-times', 'fa']" v-on:click="lockUnlockUser(v)"></span></td>
@@ -279,7 +279,7 @@
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="{% static 'js/base.js' %}"></script>
   <script src="{% static 'js/admin-users-script.js' %}"></script>
 

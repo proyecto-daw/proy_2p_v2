@@ -2,13 +2,6 @@ var WAYPOINTS = {};
 var app;
 
 $(document).ready(function() {
-  var user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
-  } else {
-    return;
-  }
-
   app = new Vue({
     el: '#content',
     data: {
@@ -22,14 +15,19 @@ $(document).ready(function() {
           $(".sidebar .collapse").hide();
         }
       },
+      rowClicked: function(id){
+        rowClicked(id);
+      }
     }
   });
 
   $.ajax({
-    url: "waypoints",
+    url: "api/waypoints",
     method: "GET",
     success: function(data, status) {
-      WAYPOINTS = data.waypoints;
+      for(let wp of data){
+        WAYPOINTS[wp.pk]=wp;
+      }
       app.waypoints = WAYPOINTS;
     }
   });
@@ -56,9 +54,9 @@ $(document).ready(function() {
 function rowClicked(id) {
   let waypoint = WAYPOINTS[id];
   $("span#targetId").text(id);
-  $("input#inputLat").val(waypoint[0]);
-  $("input#inputLong").val(waypoint[1]);
-  $("input#inputName").val(waypoint[2]);
+  $("input#inputLat").val(waypoint.latitude);
+  $("input#inputLong").val(waypoint.longitude);
+  $("input#inputName").val(waypoint.name);
 }
 
 function submitEdit(event) {
@@ -72,34 +70,63 @@ function submitEdit(event) {
     return;
   }
 
-  var user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
+  if(targetId == "-1"){
+    $.ajax({
+      url: "api/waypoints/",
+      method: "POST",
+      beforeSend:function(xhr){
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      },
+      data: {
+        "latitude": $("input#inputLat").val(),
+        "longitude": $("input#inputLong").val(),
+        "name": $("input#inputName").val(),
+        "description": ""
+      },
+      success: function() {
+        location.reload();
+      },
+      error: function(xhr, status, error) {
+        alert("Server error!" + xhr);
+        console.log(xhr);
+      }
+    });
   } else {
-    return;
+    $.ajax({
+      url: "api/waypoints/" + targetId + "/",
+      method: "PATCH",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      },
+      data: {
+        "latitude": $("input#inputLat").val(),
+        "longitude": $("input#inputLong").val(),
+        "name": $("input#inputName").val()
+      },
+      success: function () {
+        location.reload();
+      },
+      error: function (xhr, status, error) {
+        alert("Server error!");
+      }
+    });
   }
+}
 
-  $.ajax({
-    url: "api_admin/new_or_edit_waypoint",
-    method: "POST",
-    data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
-      "waypoint": JSON.stringify({
-        [targetId]: [
-          $("input#inputLat").val(),
-          $("input#inputLong").val(),
-          $("input#inputName").val()
-        ]
-      })
-    },
-    success: function() {
-      location.reload();
-    },
-    error: function(xhr, status, error) {
-      alert("Server error!");
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-  });
+    return cookieValue;
 }
 
 function submitDelete(event) {
@@ -111,27 +138,14 @@ function submitDelete(event) {
     return;
   }
 
-  var user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
-  } else {
-    return;
-  }
-
   $.ajax({
-    url: "api_admin/delete_waypoint",
-    method: "POST",
-    data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
-      "waypoint_id": targetId
+    url: "api/waypoints/" + targetId + "/",
+    method: "DELETE",
+    beforeSend:function(xhr){
+      xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
     },
     success: function(data, status) {
-      if (data.result == "OK") {
-        location.reload();
-      } else if (data.result == "PROTECTED_ERROR") {
-        alert("No se puede eliminar! El waypoint todavía está relacionado con alguna clase!");
-      }
+      location.reload();
     },
     error: function(xhr, status, error) {
       alert("Server error!");

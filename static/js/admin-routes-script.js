@@ -2,13 +2,6 @@ var user;
 var app;
 
 $(document).ready(function() {
-  user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
-  } else {
-    return;
-  }
-
   app = new Vue({
     el: '#content',
     data: {
@@ -32,20 +25,20 @@ $(document).ready(function() {
         return this.waypoints[this.chosenSourceIndex];
       },
       sourceName: function() {
-        return this.chosenSource[2];
+        return this.chosenSource.name;
       },
       chosenTarget: function() {
         return this.waypoints[this.chosenTargetIndex];
       },
       neighborsOfChosen: function() {
-        return this.chosenSource[3];
+        return this.chosenSource.neighbor_waypoints;
       },
       notNeighborsOfChosen: function() {
         let ans = [];
         for (let x in this.waypoints) {
           let neigh = false;
           for (let y of this.neighborsOfChosen) {
-            if ((parseInt(x) == y[0]) || (parseInt(x) == parseInt(this.chosenSourceIndex))) {
+            if ((parseInt(x) == y.target_pk) || (parseInt(x) == parseInt(this.chosenSourceIndex))) {
               neigh = true;
               break;
             }
@@ -113,19 +106,25 @@ $(document).ready(function() {
       saveNewRoute: function() {
         if (this.dist != null && this.chosenTargetIndex != null) {
           $.ajax({
-            url: "api_admin/add_new_route",
+            url: "add_new_route",
             method: "POST",
             data: {
-              "username": user.EMAIL,
-              "password": user.PASSWORD,
               "source": this.chosenSourceIndex,
               "target": this.chosenTargetIndex,
               "distance": this.dist
             }
           });
 
-          this.chosenSource[3].push([parseInt(this.chosenTargetIndex), parseInt(this.dist)]);
-          this.chosenTarget[3].push([parseInt(this.chosenSourceIndex), parseInt(this.dist)]);
+          this.chosenSource.neighbor_waypoints.push({
+            "distance": parseInt(this.dist),
+            "target_pk": parseInt(this.chosenTargetIndex),
+            "target_name": this.waypoints[parseInt(this.chosenTargetIndex)].name
+          });
+          this.chosenTarget.neighbor_waypoints.push({
+            "distance": parseInt(this.dist),
+            "target_pk": parseInt(this.chosenSourceIndex),
+            "target_name": this.waypoints[parseInt(this.chosenTargetIndex)].name
+          });
           this.dist = null;
         } else {
           this.error();
@@ -135,10 +134,12 @@ $(document).ready(function() {
   });
 
   $.ajax({
-    url: "waypoints",
+    url: "api/waypoints",
     method: "GET",
     success: function(data, status) {
-      app.waypoints = data.waypoints;
+      for(let wp of data){
+        Vue.set(app.waypoints, wp.pk, wp)
+      }
     }
   });
 });

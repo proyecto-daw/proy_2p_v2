@@ -41,24 +41,19 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-  var user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
-  } else {
-    return;
-  }
-
   var arr = [];
 
   $.ajax({
-    url: "waypoints",
+    url: "api/waypoints",
     method: "GET",
     success: function(data, status) {
-      WAYPOINTS = data.waypoints;
+      for(let wp of data){
+        WAYPOINTS[wp.pk]=wp;
+      }
       for (let w in WAYPOINTS) {
         arr.push({
           val: w,
-          text: WAYPOINTS[w][2]
+          text: WAYPOINTS[w].name
         });
       }
 
@@ -77,11 +72,13 @@ $(document).ready(function() {
 
 function fillEvents() {
   $.ajax({
-    url: "events",
+    url: "api/events",
     method: "GET",
     success: function(data, status) {
-      let events = data.events;
-      EVENTS = events;
+      let events = data;
+      for(let ev of data){
+        EVENTS[ev.pk]=ev;
+      }
       app.events = EVENTS;
       app.waypoints = WAYPOINTS;
       // for (let e in events) {
@@ -120,10 +117,10 @@ $(document).ready(function() {
 function rowClicked(id) {
   let ev = EVENTS[id];
   $("span#targetId").text(id);
-  $("input#inputName").val(ev[0]);
-  $("input#inputPlace").val(ev[1]);
-  $("select").val(ev[2]);
-  $('#datetimepicker1').datetimepicker('date', moment(ev[3]));
+  $("input#inputName").val(ev.name);
+  $("input#inputPlace").val(ev.place);
+  $("select").val(ev.closest_waypoint_pk);
+  $('#datetimepicker1').datetimepicker('date', moment(ev.start_datetime));
 }
 
 function submitEdit(event) {
@@ -137,36 +134,64 @@ function submitEdit(event) {
     return;
   }
 
-  var user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
+  if(targetId == "-1"){
+    $.ajax({
+      url: "api/events/",
+      method: "POST",
+      beforeSend:function(xhr){
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      },
+      data: {
+        "name": $("input#inputName").val(),
+        "place": $("input#inputPlace").val(),
+        "closest_waypoint": $("select#inputClosestWp").val(),
+        "start_datetime": moment($("input#inputDate").val()).format("YYYY-MM-DDThh:mm:ss")
+      },
+      success: function() {
+        location.reload();
+      },
+      error: function(xhr, status, error) {
+        alert("Server error!" + xhr);
+        console.log(xhr);
+      }
+    });
   } else {
-    return;
+    $.ajax({
+      url: "api/events/" + targetId + "/",
+      method: "PATCH",
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      },
+      data: {
+        "name": $("input#inputName").val(),
+        "place": $("input#inputPlace").val(),
+        "closest_waypoint": $("select#inputClosestWp").val(),
+        "start_datetime": moment($("input#inputDate").val()).format("YYYY-MM-DDThh:mm:ss")
+      },
+      success: function () {
+        location.reload();
+      },
+      error: function (xhr, status, error) {
+        alert("Server error!");
+      }
+    });
   }
+}
 
-  $.ajax({
-    url: "api_admin/new_or_edit_event",
-    // url: "http://localhost:8000/api_admin/new_or_edit_event",
-    method: "POST",
-    data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
-      "event": JSON.stringify({
-        [targetId]: [
-          $("input#inputName").val(),
-          $("input#inputPlace").val(),
-          $("select#inputClosestWp").val(),
-          $('#datetimepicker1').data("datetimepicker").date().format(),
-        ]
-      })
-    },
-    success: function() {
-      location.reload();
-    },
-    error: function(xhr, status, error) {
-      alert("Server error!");
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
     }
-  });
+    return cookieValue;
 }
 
 function submitDelete(event) {
@@ -178,27 +203,14 @@ function submitDelete(event) {
     return;
   }
 
-  var user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
-  } else {
-    return;
-  }
-
   $.ajax({
-    url: "api_admin/delete_event",
-    method: "POST",
-    data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
-      "event_id": targetId
+    url: "api/events/" + targetId + "/",
+    method: "DELETE",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
     },
     success: function(data, status) {
-      if (data.result == "OK") {
-        location.reload();
-      } else if (data.result == "PROTECTED_ERROR") {
-        alert(data.result);
-      }
+      location.reload();
     },
     error: function(xhr, status, error) {
       alert("Server error!");

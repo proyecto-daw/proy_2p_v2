@@ -6,7 +6,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', "courses", "friends", "career", "blocked", "saved_events"]
+        fields = ['url', "pk", 'username', 'email', "courses", "friends", "career", "blocked", "saved_events", "is_staff", "name"]
 
 
 class RouteSerializer(serializers.HyperlinkedModelSerializer):
@@ -15,11 +15,11 @@ class RouteSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class WaypointSerializer(serializers.HyperlinkedModelSerializer):
-    neighbor_waypoints = RouteSerializer(source="source", many=True)
+    neighbor_waypoints = RouteSerializer(source="source", many=True, read_only=True)
 
     class Meta:
         model = Waypoint
-        fields = '__all__'
+        fields = ('url', 'pk', 'neighbor_waypoints', 'latitude', 'longitude', 'name', 'description')
 
 
 class AreaSerializer(serializers.HyperlinkedModelSerializer):
@@ -47,9 +47,12 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
+    closest_waypoint_pk = serializers.ReadOnlyField(source="closest_waypoint.pk")
+    closest_waypoint = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Waypoint.objects.all(), required=True)
+
     class Meta:
         model = Event
-        fields = "__all__"
+        fields = ("url", "pk", "name", "place", "start_datetime", "closest_waypoint_pk", "closest_waypoint")
 
 
 class TrackingRequestSerializer(serializers.HyperlinkedModelSerializer):

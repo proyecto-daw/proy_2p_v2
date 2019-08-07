@@ -41,20 +41,18 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Bienvenidos a NexusMap!</h1>
                   </div>
-                  <form class="user">
+                  <form class="user" action="" method="post">
                     <div class="form-group">
                       <p id="login-error" class="form-control-plaintext text-danger">Usuario o contraseña erróneos!</p>
                     </div>
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="inputEmail" placeholder="Ingrese Email">
+                      <input type="text" class="form-control form-control-user" id="inputEmail" name="inputEmail" placeholder="Ingrese username">
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="inputPassword" placeholder="Contraseña">
+                      <input type="password" class="form-control form-control-user" id="inputPassword" name="inputPassword" placeholder="Contraseña">
                     </div>
 
-                    <a href="#" id="login" class="btn btn-primary btn-user btn-block">
-                      Iniciar Sesión
-                    </a>
+                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Iniciar sesión">
                     <hr>
                     <a href="https://www.academico.espol.edu.ec/login.aspx?ReturnUrl=%2fUI%2fInformacionAcademica%2finformaciongeneral.aspx" class="btn btn-academico btn-user btn-block">
                       <i class="fas fa-graduation-cap fa-fw"></i> Academico

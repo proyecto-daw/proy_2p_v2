@@ -1,3 +1,6 @@
 venv/
 staticfiles/*
 !staticfiles/placeholder
+*.sqlite3
+*.py[cod]
+.idea/*

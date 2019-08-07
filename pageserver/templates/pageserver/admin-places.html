@@ -202,11 +202,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(v,k) in waypoints" v-on:click="rowClicked(k)">
-                    <th>{% verbatim %}{{k}}{%endverbatim %}</th>
-                    <td>{% verbatim %}{{v[0]}}{%endverbatim %}</td>
-                    <td>{% verbatim %}{{v[1]}}{%endverbatim %}</td>
-                    <td>{% verbatim %}{{v[2]}}{%endverbatim %}</td>
+                  <tr v-for="(v,k) in waypoints" v-on:click="rowClicked(v.pk)">
+                    <th>{% verbatim %}{{v.pk}}{%endverbatim %}</th>
+                    <td>{% verbatim %}{{v.latitude}}{%endverbatim %}</td>
+                    <td>{% verbatim %}{{v.longitude}}{%endverbatim %}</td>
+                    <td>{% verbatim %}{{v.name}}{%endverbatim %}</td>
                   </tr>
                   <tr>
                     <th><span id="targetId">*</span></th>
@@ -278,7 +278,10 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
   <!-- Core plugin JavaScript-->
@@ -287,7 +290,7 @@
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="{% static 'js/base.js' %}"></script>
   <script src="{% static 'js/admin-places-script.js' %}"></script>
 
