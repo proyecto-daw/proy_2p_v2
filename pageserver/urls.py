@@ -31,7 +31,7 @@ urlpatterns = [
     path('admin-events', views.admin_events, name="admin_events"),
     path('admin-routes', views.admin_routes, name="admin_add_route"),
 
-    path('contact-us', views.contactus, name="contactus"),
+    path('contactus', views.contactus, name="contactus"),
     path('team', views.team, name="team"),
     path('news', views.news, name="news"),
 

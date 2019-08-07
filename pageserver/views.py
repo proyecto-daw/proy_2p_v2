@@ -1,6 +1,9 @@
 from django.contrib.auth import authenticate, logout
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponseRedirect,render_to_response
+from django.core.mail import EmailMessage,send_mail
+from pageserver.models import *
+
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
@@ -48,9 +51,25 @@ def admin_routes(request):
 
 def contactus(request):
     if request.method == 'POST':
-        print(request.POST["firstName"])
-    return render(request, "pageserver/contactus.html")
-
+        formulario = FormularioContactanos(request.POST)
+        if formulario.is_valid():
+            asunto = "Alguien quiere contactartese contigo"
+            mensaje = "Una persona te a escrito!!"
+            '''
+            mail = EmailMessage(asunto, mensaje,to=['nexusmap2019@gmail.com'])
+            mail.send()
+            '''
+            send_mail(
+                asunto,
+                mensaje,
+                'nexusmap2019@gmail.com',
+                ['nexusmap2019@gmail.com'],
+                fail_silently=False,
+            )
+            return HttpResponseRedirect('/')
+    else:
+        formulario = FormularioContactanos()
+    return render(request, "pageserver/contactus.html", {'form': formulario})
 
 def team(request):
     return render(request, "pageserver/team.html")
