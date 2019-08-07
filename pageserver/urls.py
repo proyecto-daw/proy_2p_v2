@@ -31,7 +31,7 @@ urlpatterns = [
     path('admin-events', views.admin_events, name="admin_events"),
     path('admin-routes', views.admin_routes, name="admin_add_route"),
 
-    path('contact-us', views.contactus, name="contactus"),
+    path('contactus', views.contactus, name="contactus"),
     path('team', views.team, name="team"),
     path('news', views.news, name="news"),
 
@@ -53,4 +53,10 @@ urlpatterns = [
     path('ask_position', api_views.ask_position, name="ask_position"),
     path('publish_my_position', api_views.show_my_position, name="show_my_position"),
     path('add_new_route', api_views.admin_add_route, name="api_admin_add_route"),
+
+    path('ping', api_views.ping, name="ping"),
+    path('stats/visits-by-page', api_views.visits_by_page, name="stats_visits_by_page"),
+    path('stats/visits-by-time-period', api_views.visits_by_time_period, name="stats_visits_by_time_period"),
+    path('reports/visits-by-page', views.visits_by_page, name="reports_visits_by_page"),
+    path('reports/visits-by-time-period', views.visits_by_time_period, name="reports_visits_by_time_period"),
 ]

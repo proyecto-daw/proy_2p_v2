@@ -37,9 +37,9 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Contáctanos</h1>
               </div>
-              <form action="" method="POST" class="user" id="contactanos">
-			    {% csrf_token %}
-                <div class="form-group row">
+              <form class="user" id="contactanos" method="POST">{% csrf_token %}
+                {{ form.as_p }}
+                <!--<div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" id="firstName" name="firstName" required placeholder="Nombre">
                   </div>
@@ -87,6 +87,7 @@
               <div class="form-group">   
                   <textarea required class=form-control id= textbox name="Text1" rows="6" placeholder="Comentarios"></textarea>
               </div>
+              -->
               <div>
                 <input type="submit" value="Submit" class="btn btn-primary btn-user btn-block" id="contactus">            
               </div>
