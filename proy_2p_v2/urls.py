@@ -27,6 +27,7 @@ router.register(r'courses', views.CourseViewSet)
 router.register(r'sessions', views.SessionViewSet)
 router.register(r'events', views.EventViewSet)
 router.register(r'tracking-requests', views.TrackingRequestViewSet)
+router.register(r'groups', views.GroupViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -28,6 +28,7 @@ class RouteInlineAdmin(admin.TabularInline):
     fk_name = "source"
     extra = 1
 
+
 @admin.register(Waypoint)
 class WaypointAdmin(admin.ModelAdmin):
     inlines = [RouteInlineAdmin]
@@ -61,3 +62,14 @@ class TrackingRequestAdmin(admin.ModelAdmin):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     pass
+
+
+class MembershipInlineAdmin(admin.TabularInline):
+    model = Membership
+    extra = 1
+
+
+@admin.register(Group)
+class GroupAdmin(admin.ModelAdmin):
+    inlines = [MembershipInlineAdmin]
+

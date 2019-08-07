@@ -60,6 +60,39 @@ function updateUserData() {
         toAnimate.push(card);
       }
       animateFriends(1);
+      toAnimate = [];
+      let groups = data.groups;
+      i = 0;
+      for (let g of groups) {
+        i++;
+        $("div#no-groups-alert").hide();
+        var card = $("#group-template").clone().removeAttr("id");
+        card.attr("id", "group-" + i);
+        //card.show();
+        $(".text-primary", card).text(g.name);
+        $("a.edit-group", card).click(function() {
+          window.location = "/groups/"+g.pk+"/edit";
+        });
+        $("a.delete-group", card).click(function() {
+          $.ajax({
+            url: "api/groups/" + g.pk + "/",
+            method: "DELETE",
+            beforeSend:function(xhr){
+              xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            },
+            success: function(data, status) {
+              location.reload();
+            },
+            error: function(xhr, status, error) {
+              alert("Server error!");
+            }
+          });
+        });
+
+        $("#collapseCardGroups>.card-body").append(card);
+        toAnimate.push(card);
+      }
+      animateFriends(1);
     }
   });
 }
@@ -110,4 +143,20 @@ function unfriend(email) {
       location.reload();
     }
   });
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }

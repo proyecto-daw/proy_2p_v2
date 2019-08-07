@@ -151,3 +151,22 @@ class Event(models.Model):
 
     def __str__(self):
         return f"Event {self.name} at {self.place}"
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=100)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    members = models.ManyToManyField(User, through = "Membership")
+
+    def to_dict(self):
+        return {"name": self.name, "creation_date": self.creation_date, "pk": self.pk}
+
+    def __str__(self):
+        return f"Group {self.name}"
+
+
+class Membership(models.Model):
+    user = models.ForeignKey(User, related_name="memberships", on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, related_name="memberships", on_delete=models.CASCADE)
+    is_group_manager = models.BooleanField(default=False)
+    join_date = models.DateTimeField(auto_now_add=True)

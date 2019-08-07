@@ -70,12 +70,22 @@ class TrackingRequestViewSet(viewsets.ModelViewSet):
             return []
         return self.queryset.filter(Q(source=self.request.user) | Q(target=self.request.user))
 
+class GroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            return []
+        return self.queryset.filter(members__in=[self.request.user])
+
 
 @csrf_exempt
 def get_friends_groups(request):
     if request.user.is_authenticated:
         return JsonResponse({"friends": [f.to_friend_dict() for f in request.user.friends.all()],
-                             "groups": []})
+                             "groups": [g.to_dict() for g in request.user.group_set.all()]})
     else:
         return JsonResponse({"friends": [], "groups": []})
 

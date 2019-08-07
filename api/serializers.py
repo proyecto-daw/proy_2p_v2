@@ -59,3 +59,8 @@ class TrackingRequestSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TrackingRequest
         fields = "__all__"
+
+class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Group
+        fields = "__all__"
