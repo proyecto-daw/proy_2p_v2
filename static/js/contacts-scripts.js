@@ -21,7 +21,8 @@ $(document).ready(function() {
     data: {
       results: [],
       searched: false,
-      friends: []
+      friends: [],
+	  groups: []
     },
     computed: {
       loggedIn: function() {
@@ -32,6 +33,9 @@ $(document).ready(function() {
       },
       anyFriends: function() {
         return this.friends.length > 0;
+      },
+	  anyGroups: function() {
+        return this.groups.length > 0;
       }
     },
     methods: {
@@ -108,6 +112,7 @@ function getMyFriends() {
     },
     success: function(data, status) {
       app.friends = data.friends;
+	  app.groups = data.groups;
     }
   });
 }
