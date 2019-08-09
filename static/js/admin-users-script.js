@@ -23,6 +23,12 @@ $(document).ready(function() {
       },
       fullName: function(u) {
         return u.name;
+      },
+      adminUnadminUser: function(u){
+        adminUnadminUser(u);
+      },
+      lockUnlockUser: function(u){
+        lockUnlockUser(u);
       }
     }
   });

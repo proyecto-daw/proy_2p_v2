@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -13,6 +13,8 @@ from api.permissions import *
 from .models import *
 from api.serializers import *
 from rest_framework import permissions
+
+from influxdb import InfluxDBClient
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -69,6 +71,7 @@ class TrackingRequestViewSet(viewsets.ModelViewSet):
         if self.request.user.is_anonymous:
             return []
         return self.queryset.filter(Q(source=self.request.user) | Q(target=self.request.user))
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
@@ -303,6 +306,7 @@ def remove_my_event(request):
     else:
         return JsonResponse({"status": "ERROR"})
 
+
 @csrf_exempt
 def admin_add_route(request):
     if request.user.is_staff:
@@ -321,3 +325,35 @@ def admin_add_route(request):
         return JsonResponse({"result": "OK"})
     else:
         return JsonResponse({"result": "ERROR"})
+
+
+@csrf_exempt
+def ping(request):
+    username = request.user.username if request.user.is_authenticated else "anonymous"
+
+    client = InfluxDBClient("ec2-18-233-170-234.compute-1.amazonaws.com", 8086, "***", "***", "hits")
+    client.write_points(
+        [{"measurement": "visit", "tags": {"page": request.POST["page"]}, "fields": {"user": username}}])
+    return HttpResponse()
+
+
+def visits_by_page(request):
+    if not request.user.is_staff:
+        return HttpResponse(status=403)
+
+    client = InfluxDBClient("ec2-18-233-170-234.compute-1.amazonaws.com", 8086, "***", "***", "hits")
+    hits = client.query(
+        f"SELECT count(*) as visits FROM \"hits\"..\"visit\" WHERE time > now() - {request.GET['period']} GROUP BY page")
+
+    return JsonResponse([(k[1]["page"], next(v)["visits_user"]) for k, v in hits.items()], safe=False)
+
+
+def visits_by_time_period(request):
+    if not request.user.is_staff:
+        return HttpResponse(status=403)
+
+    client = InfluxDBClient("ec2-18-233-170-234.compute-1.amazonaws.com", 8086, "***", "***", "hits")
+    hits = client.query(
+        f"SELECT count(*) as visits FROM \"hits\"..\"visit\" WHERE time > now() - {request.GET['limit']} GROUP BY time({request.GET['period']})")
+
+    return JsonResponse(list(hits.get_points()), safe=False)

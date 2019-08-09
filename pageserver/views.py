@@ -1,9 +1,7 @@
 from django.contrib.auth import authenticate, logout
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect,HttpResponseRedirect
-from django.core.mail import EmailMessage,send_mail
+from django.shortcuts import render, redirect
+from django.core.mail import EmailMessage
 from pageserver.models import *
-
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
@@ -87,6 +85,7 @@ def contactus(request):
         formulario = FormularioContactanos()
     return render(request, "pageserver/contactus.html", {'form': formulario})
 
+
 def team(request):
     return render(request, "pageserver/team.html")
 
@@ -124,3 +123,14 @@ def register(request):
 
 def user_profile(request):
     return render(request, "pageserver/user-profile.html")
+
+
+def visits_by_page(request):
+    return render(request, "pageserver/report-visits-by-page.html", {"url": "?period=" + request.GET["period"]})
+
+
+def visits_by_time_period(request):
+    DELTA_TO_HOURS = {"1h": 1, "12h": 12, "1d": 24}
+    return render(request, "pageserver/report-visits-by-time-period.html",
+                  {"url": "?limit=" + request.GET["limit"] + "&period=" + request.GET["period"],
+                   "deltaHours": DELTA_TO_HOURS[request.GET["period"]]})

@@ -2,6 +2,8 @@ $(document).ready(function() {
   updateUserDropdown();
   updateAdminButton();
 
+  pingServer();
+
   // Callback for "Cerrar sesión" in modal
   $("#logoutModal .btn-primary").click(function() {
     $(".modal").modal("hide");
@@ -18,7 +20,15 @@ $(document).ready(function() {
   });
 });
 
-
+function pingServer(){
+  $.ajax({
+    url: "/ping",
+    method: "POST",
+    data: {
+      "page": window.location.pathname
+    }
+  })
+}
 
 // Check if current user is logged in, style login button accordingly
 function updateUserDropdown() {

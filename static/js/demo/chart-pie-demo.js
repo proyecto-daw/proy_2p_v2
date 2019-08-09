@@ -3,33 +3,49 @@ Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,Bli
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Pie Chart Example
-var ctx = document.getElementById("myPieChart");
-var myPieChart = new Chart(ctx, {
-  type: 'doughnut',
-  data: {
-    labels: ["Direct", "Referral", "Social"],
-    datasets: [{
-      data: [55, 30, 15],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-      hoverBorderColor: "rgba(234, 236, 244, 1)",
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      caretPadding: 10,
-    },
-    legend: {
-      display: false
-    },
-    cutoutPercentage: 80,
-  },
-});
+var myPieChart = null;
+
+function populatePieChart(period) {
+  piePartialUrl = "visits-by-page?period=" + period;
+  $.ajax({
+    url: "stats/" + piePartialUrl,
+    method: "GET",
+    success: function (data, status) {
+      pieData = data;
+      if(myPieChart!=null) {
+        myPieChart.destroy();
+      }
+      var ctx = document.getElementById("myPieChart");
+      myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: data.map(x => x[0]),
+          datasets: [{
+            data: data.map(x => x[1]),
+            backgroundColor: palette('tol', data.length).map(function (hex) {
+              return '#' + hex;
+            }),
+          }],
+        },
+        options: {
+          maintainAspectRatio: false,
+          tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+          },
+          legend: {
+            display: false
+          },
+          cutoutPercentage: 70,
+        },
+      });
+    }
+  });
+}
+populatePieChart("1d");
