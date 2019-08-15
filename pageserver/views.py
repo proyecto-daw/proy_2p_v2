@@ -1,6 +1,7 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.forms import ModelForm
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, HttpResponseRedirect, render_to_response, get_object_or_404
 from django.core.mail import EmailMessage, send_mail
@@ -64,20 +65,36 @@ def contactus(request):
     if request.method == 'POST':
         formulario = FormularioContactanos(request.POST)
         if formulario.is_valid():
-            asunto = "Alguien quiere contactartese contigo"
-            mensaje = "Una persona te a escrito!!"
-            '''
+            asunto = str(formulario.cleaned_data.get("nombres"))+" "+str(formulario.cleaned_data.get("apellidos"))\
+                     +" quiere contactartese contigo"
+
+            datos ="    Nombres:               {0}\n " \
+                    "   Apellidos:             {1}\n " \
+                    "   Correo electronico:    {2}\n " \
+                    "   Fecha de Nacimiento:   {3}\n " \
+                    "   Lugar de Origen:       {4}\n" \
+                    "   Comentarios:           {5}\n".format(
+                formulario.cleaned_data.get("nombres"),
+                formulario.cleaned_data.get("apellidos"),
+                formulario.cleaned_data.get("correo"),
+                formulario.cleaned_data.get("fecha_de_nacimiento"),
+                formulario.cleaned_data.get("lugar_origen"),
+                formulario.cleaned_data.get("comentarios"))
+
+            mensaje = "!!Una persona a escrito para contactarse!!"+"\n " \
+                        "Y nos a dejado los siguientes datos: \n \n \n"+datos
+
+            mode = ModelForm.create(formulario.cleaned_data.get("nombres"),
+                            formulario.cleaned_data.get("apellidos"),
+                            formulario.cleaned_data.get("correo"),
+                            formulario.cleaned_data.get("fecha_de_nacimiento"),
+                            formulario.cleaned_data.get("lugar_origen"),
+                            formulario.cleaned_data.get("comentarios"))
+
             mail = EmailMessage(asunto, mensaje,to=['nexusmap2019@gmail.com'])
             mail.send()
-            '''
-            send_mail(
-                asunto,
-                mensaje,
-                'nexusmap2019@gmail.com',
-                ['nexusmap2019@gmail.com'],
-                fail_silently=False,
-            )
-            return HttpResponseRedirect('/')
+            mode.save()
+            return render(request,"pageserver/contactusAgradecimiento.html")
     else:
         formulario = FormularioContactanos()
     return render(request, "pageserver/contactus.html", {'form': formulario})

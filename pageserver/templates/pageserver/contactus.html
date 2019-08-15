@@ -38,24 +38,26 @@
                 <h1 class="h4 text-gray-900 mb-4">Contáctanos</h1>
               </div>
               <form class="user" id="contactanos" method="POST">{% csrf_token %}
-                {{ form.as_p }}
+			  {{form.as_p}}
                 <!--<div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" id="firstName" name="firstName" required placeholder="Nombre">
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="lastName" required placeholder="Apellidos">
+                    <input type="text" class="form-control form-control-user" id="lastName" name="lastName" required placeholder="Apellidos">
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="inputEmail" required placeholder="Correo electrónico de contacto">
+                  <input type="email" class="form-control form-control-user" id="inputEmail" name="inputEmail" required placeholder="Correo electrónico de contacto">
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                  <input type="date" class="form-control form-control-user" id="inputBornDate" required >
+                  <input type="date" class="form-control form-control-user" id="inputBornDate" name="inputBornDate" required >
                 </div>
                 <div class="col-sm-6 mb-3 mb-sm-0">
                   <input type="text" class="form-control form-control-user" id="inputPlace" required placeholder="Lugar de origen" list="provincias" name="provincias" >
+				  -->
+				  
                   <datalist id="provincias">
                     <option value="Azuay">
                     <option value="Bolívar">
@@ -80,12 +82,13 @@
                     <option value="Santo Domingo de los Tsáchilas">
                     <option value="Sucumbios">
                     <option value="Tungurahua">
-                    <option value="Zamira Chinchipe">
+                    <option value="Zamora Chinchipe">
                   </datalist>
+				  <!--
                 </div>       
               </div>
               <div class="form-group">   
-                  <textarea required class=form-control id= textbox name="Text1" rows="6" placeholder="Comentarios"></textarea>
+                  <textarea required class=form-control id="textbox" name="Text1" rows="6" placeholder="Comentarios"></textarea>
               </div>
               -->
               <div>
