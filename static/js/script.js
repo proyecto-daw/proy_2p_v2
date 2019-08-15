@@ -62,21 +62,7 @@ $(document).ready(function () {
                 trueMarkers.push(marker);
 
                 // Only for admins! Show all routes with distances
-                var user = sessionStorage.getItem("user");
-                if (user != null && JSON.parse(user).hasOwnProperty("ADMIN")) { // Logged in AND admin, show admin button
-                    for (let r of markers[k].neighbor_waypoints) {
-                        var neighbor = markers[k].neighbor_waypoints[r];
-                        var route = L.polyline([
-                            [markers[neighbor.target_pk].latitude, markers[neighbor.target_pk].longitude],
-                            [markers[k].latitude, markers[k].latitude]
-                        ], {
-                            color: 'red',
-                            weight: 2
-                        }).addTo(mymap);
-                        route.bindPopup("" + neighbor.distance);
-                    }
-                }
-                // END only for admins
+
             }
             mymap.fitBounds(new L.featureGroup(trueMarkers).getBounds(), {
                 padding: L.point(20, 20)

@@ -15,18 +15,18 @@ $(document).ready(function() {
 var toAnimate = [];
 
 function updateUserData() {
-  user = sessionStorage.getItem("user");
-
-  if (user == null) {
-    window.location.href = "home"
-  }
-
-  user = JSON.parse(user); // Logged in, show dropdown and change "Iniciar sesión" to username
-  $("#nombre").attr("placeholder", user.NAMES);
-  $("#apellido").attr("placeholder", user.LASTNAMES);
-  $("#n_usuario").attr("placeholder", user.USERNAME);
-  $("#correo").attr("placeholder", user.EMAIL);
-  $("#carrera").attr("placeholder", user.CAREER);
+  // user = sessionStorage.getItem("user");
+  //
+  // if (user == null) {
+  //   window.location.href = "home"
+  // }
+  //
+  // user = JSON.parse(user); // Logged in, show dropdown and change "Iniciar sesión" to username
+  // $("#nombre").attr("placeholder", user.NAMES);
+  // $("#apellido").attr("placeholder", user.LASTNAMES);
+  // $("#n_usuario").attr("placeholder", user.USERNAME);
+  // $("#correo").attr("placeholder", user.EMAIL);
+  // $("#carrera").attr("placeholder", user.CAREER);
 
   $.notify.defaults({
     className: "success"
@@ -35,9 +35,8 @@ function updateUserData() {
   $.ajax({
     url: "get_friends_groups",
     method: "POST",
-    data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD
+    beforeSend:function(xhr){
+      xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'))
     },
     success: function(data, status) {
       let friends = data.friends;
@@ -62,17 +61,26 @@ function updateUserData() {
       animateFriends(1);
       toAnimate = [];
       let groups = data.groups;
+      console.log(groups);
       i = 0;
       for (let g of groups) {
         i++;
         $("div#no-groups-alert").hide();
         var card = $("#group-template").clone().removeAttr("id");
+        card.show();
         card.attr("id", "group-" + i);
         //card.show();
         $(".text-primary", card).text(g.name);
+        $(".text-primary", card).attr("href", "groups/" + g.pk);
+        if(!g.you_are_admin){
+          $("a.edit-group", card).hide();
+        }
         $("a.edit-group", card).click(function() {
           window.location = "/groups/"+g.pk+"/edit";
         });
+        if(!g.you_are_admin){
+          $("a.delete-group", card).hide();
+        }
         $("a.delete-group", card).click(function() {
           $.ajax({
             url: "api/groups/" + g.pk + "/",
@@ -90,9 +98,9 @@ function updateUserData() {
         });
 
         $("#collapseCardGroups>.card-body").append(card);
-        toAnimate.push(card);
+        //toAnimate.push(card);
       }
-      animateFriends(1);
+      //animateFriends(1);
     }
   });
 }

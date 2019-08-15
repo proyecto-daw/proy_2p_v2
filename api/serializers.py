@@ -6,7 +6,8 @@ from rest_framework import serializers
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', "pk", 'username', 'email', "courses", "friends", "career", "blocked", "saved_events", "is_staff", "name"]
+        fields = ['url', "pk", 'username', 'email', "courses", "friends", "career", "blocked", "saved_events",
+                  "is_staff", "name"]
 
 
 class RouteSerializer(serializers.HyperlinkedModelSerializer):
@@ -48,7 +49,8 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
     closest_waypoint_pk = serializers.ReadOnlyField(source="closest_waypoint.pk")
-    closest_waypoint = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Waypoint.objects.all(), required=True)
+    closest_waypoint = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Waypoint.objects.all(),
+                                                          required=True)
 
     class Meta:
         model = Event
@@ -60,7 +62,16 @@ class TrackingRequestSerializer(serializers.HyperlinkedModelSerializer):
         model = TrackingRequest
         fields = "__all__"
 
+
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
+    you_are_admin = serializers.SerializerMethodField()
+
+    def get_you_are_admin(self, obj):
+        request = self.context['request']
+        if request:
+            return Membership.objects.get(user=request.user, group=obj).is_group_manager
+        return False
+
     class Meta:
         model = Group
         fields = "__all__"

@@ -149,17 +149,19 @@
               </div>
             </li>
 
-            <li class="nav-item" id="admin-button" style="display: none;">
+            {% if user.is_staff %}
+            <li class="nav-item" id="admin-button">
               <a class="nav-link" href="{% url 'admin_home' %}">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
                 <i class="fas fa-cog"></i>
               </a>
             </li>
+            {% endif %}
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar Sesión</span>
+              <a class="nav-link dropdown-toggle" href="{% if user.is_authenticated %}#{% else %}{% url 'login' %}{% endif %}" {% if user.is_authenticated %}data-toggle="dropdown"{% endif %} id="userDropdown" role="button">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{% if user.is_authenticated %}{{ user.email }}{% else %}Iniciar sesión{% endif %}</span>
                 <i class="fas fa-user-circle"></i>
               </a>
               <!-- Dropdown - User Information -->
@@ -171,7 +173,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Cerrar Sesión
+                  Cerrar sesión
                 </a>
               </div>
             </li>
@@ -377,7 +379,7 @@
         <div class="modal-body">Confirme si desea cerrar su sesi&oacute;n.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="#">Cerrar sesi&oacute;n</a>
+          <a class="btn btn-primary" href="logout">Cerrar sesi&oacute;n</a>
         </div>
       </div>
     </div>
@@ -396,6 +398,13 @@
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="{% static 'js/notify.min.js' %}"></script>
   <script src="{% static 'js/base.js' %}"></script>
+  <script>
+      {% if user.is_authenticated %}
+          var user = "placeholder";
+      {% else %}
+          var user = null;
+      {% endif %}
+  </script>
   <script src="{% static 'js/contacts-scripts.js' %}"></script>
 
   <!-- intro.js JS -->

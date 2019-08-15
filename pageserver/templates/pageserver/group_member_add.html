@@ -20,9 +20,11 @@
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
 
+  <!--link para estilos-->
   <link rel="stylesheet" href="{% static 'css/estilo.css' %}" media="screen">
 
-
+  <!-- animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
 </head>
 
@@ -68,8 +70,6 @@
           <span>Eventos</span></a>
       </li>
 
-
-
       <!-- Divider -->
       <li>
         <hr class="sidebar-divider">
@@ -82,14 +82,15 @@
           <span>Contactos</span></a>
       </li>
 
+      <!-- Divider -->
       <li>
-        <hr class="sidebar-divider">
+        <hr class="sidebar-divider ">
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="{% url 'quehacemos' %}">
           <i class="fa fa-question"></i>
-          <span> Qué hacemos </span></a>
+          <span>Qué hacemos</span></a>
       </li>
 
       <!-- Divider -->
@@ -114,10 +115,9 @@
             <i class="fa fa-bars"></i>
           </button>
 
-
-
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
+
             {% if user.is_staff %}
             <li class="nav-item" id="admin-button">
               <a class="nav-link" href="{% url 'admin_home' %}">
@@ -146,45 +146,40 @@
                 </a>
               </div>
             </li>
+
           </ul>
+
         </nav>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="page-content">
+        <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">¿Qué hacemos?</h1>
+          <h1 class="h3 mb-4 text-gray-800">Grupo: {{ group.name }}</h1>
 
-          <!-- /.container-fluid -->
-          <div id="aboutWebPage" class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h3 class="m-0 font-weight-bold text-primary">Conoce el sitio web</h3>
-            </div>
-            <div class="card-body text-justify">
-              <div class="row">
-                <div class="col mr-6">
-                  <p class="mb-1">Este sitio web te permitirá ubicarte dentro de las instalaciones de la ESPOL especialmente si eres novato o un visitante que no conoce nada sobre la universidad aquí encontrarás las siguientes funcionalidades
-                    generales: </p>
-                  <ul class="mb-1">
-                    <li class="mb-1">Búsqueda de un lugar en específico que será mostrado en un mapa incluyendo la ruta a seguir para llegar al destino deseado en base a tu ubicación actual.</li>
-                    <li class="mb-1">Lista de eventos próximos a realizarse en la ESPOL, además de la posibilidad de buscar un evento específico ya sea por nombre o fecha.
-                    </li>
-                  </ul>
-                  <p class="mb-1">
-                    Si eres un estudiante y deseas sincronizar tus horarios y actividades debes crearte una cuenta y subir tu horario de clases actual, se mostrará el tiempo restante para la actividad más cercana y se enviarán notificaciones cuando
-                    alguna actividad se encuentra cerca de iniciar. Por otro lado con tu cuenta podrás ponerte en contacto con tus compañeros para crear grupos y conversar con ellos en línea e incluse solicitar su ubicación para saber como llegar a
-                    un lugar en específico.
-                    Si eres un visitante o estudiante y posees una cuenta podrás guardar tus eventos y se enviarán diferentes notificaciones para que puedas estar pendiente de la hora, lugar y fecha del evento que te interesa.
-                  </p>
-                </div>
-                <div class="col mr-6 hideThis">
-                  <img class="img-welcome img-thumbnail" src="{% static 'img/process.png' %}" alt="proceso">
-                </div>
 
-              </div>
-            </div>
+
+
+          <!-- Contacts generales -->
+          <div id="cuerpo-login" class="row mb-5">
+
+            <div class="col">
+                <!-- Basic Card Example -->
+                <form method="post">
+                    {% csrf_token %}
+                  <div class="form-group">
+                    <label for="name">E-mail</label>
+                    <input type="email" class="form-control" id="user_email" name="user_email" placeholder="Ingrese el email del miembro" required>
+                  </div>
+                    <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="is_group_manager" name="is_group_manager">
+                    <label for="name" class="form-check-label">¿Es administrador?</label>
+                  </div>
+                  <button type="submit" class="btn btn-primary"><i class="fas fa-save fa-sm"></i> Guardar</button>
+                </form>
           </div>
+          <!-- /.container-fluid -->
         </div>
       </div>
       <!-- End of Main Content -->
@@ -194,6 +189,8 @@
         <div class=" py-2 container my-auto">
           <div class="copyright text-center my-auto">
             Contáctenos: <a href="{% url 'contactus' %}">NexusMap</a>
+            |
+            <a href="#" onclick="introJs().start()">Visita guiada</a>
           </div>
         </div>
         <div class="container my-auto">
@@ -245,11 +242,8 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
-  <script src="{% static 'js/notify.min.js' %}"></script>
 
-  <!-- Hace la Magia-->
   <script src="{% static 'js/base.js' %}"></script>
-
 </body>
 
 </html>

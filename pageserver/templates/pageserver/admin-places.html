@@ -162,9 +162,19 @@
           <ul class="navbar-nav ml-auto">
 
             <!-- Nav Item - User Information -->
+            {% if user.is_staff %}
+            <li class="nav-item" id="admin-button">
+              <a class="nav-link" href="{% url 'admin_home' %}">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
+                <i class="fas fa-cog"></i>
+              </a>
+            </li>
+            {% endif %}
+
+            <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="{% url 'login' %}" data-toggle="dropdown" id="userDropdown" role="button">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar sesión</span>
+              <a class="nav-link dropdown-toggle" href="{% if user.is_authenticated %}#{% else %}{% url 'login' %}{% endif %}" {% if user.is_authenticated %}data-toggle="dropdown"{% endif %} id="userDropdown" role="button">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{% if user.is_authenticated %}{{ user.email }}{% else %}Iniciar sesión{% endif %}</span>
                 <i class="fas fa-user-circle"></i>
               </a>
               <!-- Dropdown - User Information -->
@@ -271,7 +281,7 @@
         <div class="modal-body">Confirme si desea cerrar su sesi&oacute;n.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="#">Cerrar sesi&oacute;n</a>
+          <a class="btn btn-primary" href="logout">Cerrar sesi&oacute;n</a>
         </div>
       </div>
     </div>

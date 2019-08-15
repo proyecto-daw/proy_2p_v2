@@ -118,29 +118,31 @@
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
 
-            <li class="nav-item" id="admin-button" style="display: none;">
+            {% if user.is_staff %}
+            <li class="nav-item" id="admin-button">
               <a class="nav-link" href="{% url 'admin_home' %}">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
                 <i class="fas fa-cog"></i>
               </a>
             </li>
+            {% endif %}
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Iniciar sesión</span>
+              <a class="nav-link dropdown-toggle" href="{% if user.is_authenticated %}#{% else %}{% url 'login' %}{% endif %}" {% if user.is_authenticated %}data-toggle="dropdown"{% endif %} id="userDropdown" role="button">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{% if user.is_authenticated %}{{ user.email }}{% else %}Iniciar sesión{% endif %}</span>
                 <i class="fas fa-user-circle"></i>
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{% url 'user_profile' %}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Perfil
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Cerrar Sesión
+                  Cerrar sesión
                 </a>
               </div>
             </li>
@@ -195,19 +197,19 @@
                   <form action="/action_page.php">
                     <div class="form-group">
                       <label for="nombre">Nombre:</label>
-                      <input class="form-control" type="text" id="nombre" name="firstname" readonly>
+                      <input class="form-control" type="text" id="nombre" name="firstname" value="{{ user.name }}"readonly>
                     </div>
                     <div class="form-group">
                       <label for="n_usuario">Nombre de Usuario:</label>
-                      <input class="form-control" type="text" id="n_usuario" name="firstname" readonly>
+                      <input class="form-control" type="text" id="n_usuario" name="firstname" value="{{ user.username }}"readonly>
                     </div>
                     <div class="form-group">
                       <label for="correo">E-mail:</label>
-                      <input class="form-control" type="text" id="correo" name="correo" readonly>
+                      <input class="form-control" type="text" id="correo" name="correo" value="{{ user.email }}"readonly>
                     </div>
                     <div class="form-group">
                       <label for="carrera">Carrera:</label>
-                      <input class="form-control" type="text" id="carrera" name="carrera" readonly>
+                      <input class="form-control" type="text" id="carrera" name="carrera" value="{{ user.career }}"readonly>
                     </div>
                   </form>
                 </div>
@@ -266,6 +268,18 @@
                   <div class="card-body">
                     <div id="no-groups-alert" class="alert col-lg-12 alert-warning">No tienes grupos :(</div>
                     <!-- Add here Groups Cards. -->
+                      <div class="card border-left-success shadow">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <!-- <div class="col mr-11">
+                              <img class="img-user rounded-circle" src="img/user-female-small.jpg">
+                            </div> -->
+                            <div class="col mr-11">
+                              <a class="font-weight-bold text-success" href="{% url "group_create" %}">Crear nuevo</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     <div style="display:none!important" id="group-template" class="col-lg-12">
                       <div class="card border-left-primary shadow h-100 py-2 my-2">
                         <div class="card-body">
@@ -274,7 +288,7 @@
                               <img class="img-user rounded-circle" src="img/user-female-small.jpg">
                             </div> -->
                             <div class="col mr-11">
-                              <div class="font-weight-bold text-primary "></div>
+                              <a class="font-weight-bold text-primary "></a>
                             </div>
                             <div class="col-auto">
                               <a class="edit-group" href="#">
@@ -343,7 +357,7 @@
         <div class="modal-body">Confirme si desea cerrar su sesi&oacute;n.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="#">Cerrar sesi&oacute;n</a>
+          <a class="btn btn-primary" href="logout">Cerrar sesi&oacute;n</a>
         </div>
       </div>
     </div>

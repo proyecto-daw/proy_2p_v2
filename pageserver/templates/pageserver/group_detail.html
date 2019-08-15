@@ -20,9 +20,11 @@
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
 
+  <!--link para estilos-->
   <link rel="stylesheet" href="{% static 'css/estilo.css' %}" media="screen">
 
-
+  <!-- animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
 </head>
 
@@ -68,8 +70,6 @@
           <span>Eventos</span></a>
       </li>
 
-
-
       <!-- Divider -->
       <li>
         <hr class="sidebar-divider">
@@ -82,14 +82,15 @@
           <span>Contactos</span></a>
       </li>
 
+      <!-- Divider -->
       <li>
-        <hr class="sidebar-divider">
+        <hr class="sidebar-divider ">
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="{% url 'quehacemos' %}">
           <i class="fa fa-question"></i>
-          <span> Qué hacemos </span></a>
+          <span>Qué hacemos</span></a>
       </li>
 
       <!-- Divider -->
@@ -114,10 +115,9 @@
             <i class="fa fa-bars"></i>
           </button>
 
-
-
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
+
             {% if user.is_staff %}
             <li class="nav-item" id="admin-button">
               <a class="nav-link" href="{% url 'admin_home' %}">
@@ -146,45 +146,85 @@
                 </a>
               </div>
             </li>
+
           </ul>
+
         </nav>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="page-content">
+        <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">¿Qué hacemos?</h1>
+          <h1 class="h3 mb-4 text-gray-800">Grupo: {{ group.name }}</h1>
 
-          <!-- /.container-fluid -->
-          <div id="aboutWebPage" class="card shadow mb-4">
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h3 class="m-0 font-weight-bold text-primary">Conoce el sitio web</h3>
-            </div>
-            <div class="card-body text-justify">
-              <div class="row">
-                <div class="col mr-6">
-                  <p class="mb-1">Este sitio web te permitirá ubicarte dentro de las instalaciones de la ESPOL especialmente si eres novato o un visitante que no conoce nada sobre la universidad aquí encontrarás las siguientes funcionalidades
-                    generales: </p>
-                  <ul class="mb-1">
-                    <li class="mb-1">Búsqueda de un lugar en específico que será mostrado en un mapa incluyendo la ruta a seguir para llegar al destino deseado en base a tu ubicación actual.</li>
-                    <li class="mb-1">Lista de eventos próximos a realizarse en la ESPOL, además de la posibilidad de buscar un evento específico ya sea por nombre o fecha.
-                    </li>
-                  </ul>
-                  <p class="mb-1">
-                    Si eres un estudiante y deseas sincronizar tus horarios y actividades debes crearte una cuenta y subir tu horario de clases actual, se mostrará el tiempo restante para la actividad más cercana y se enviarán notificaciones cuando
-                    alguna actividad se encuentra cerca de iniciar. Por otro lado con tu cuenta podrás ponerte en contacto con tus compañeros para crear grupos y conversar con ellos en línea e incluse solicitar su ubicación para saber como llegar a
-                    un lugar en específico.
-                    Si eres un visitante o estudiante y posees una cuenta podrás guardar tus eventos y se enviarán diferentes notificaciones para que puedas estar pendiente de la hora, lugar y fecha del evento que te interesa.
-                  </p>
+
+
+
+          <!-- Contacts generales -->
+          <div id="cuerpo-login" class="row">
+
+            <div class="col">
+                <!-- Basic Card Example -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Datos del grupo</h6>
                 </div>
-                <div class="col mr-6 hideThis">
-                  <img class="img-welcome img-thumbnail" src="{% static 'img/process.png' %}" alt="proceso">
+                <!-- Cuerpo-->
+                <div class="card-body">
+                  <form action="/action_page.php">
+                    <div class="form-group">
+                      <label for="nombre">Nombre:</label>
+                      <input class="form-control" type="text" id="nombre" name="name" value="{{ group.name }}"readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="n_usuario">Fecha de creación:</label>
+                      <input class="form-control" type="date" id="creation_date" name="creation_date" value="{{ group.creation_date|date:"Y-m-d" }}"readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="correo">Integrantes</label>
+                      <input class="form-control" type="text" id="num_members" name="num_members" value="{{ group.members.all|length }}"readonly>
+                    </div>
+                  </form>
                 </div>
+                <!-- Cuerpo-->
+
 
               </div>
+            <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">E-mail</th>
+                      <th scope="col">¿Es administrador?</th>
+                      <th scope="col">Fecha de unión</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for membership in group.memberships.all %}
+                    <tr>
+                      <th scope="row">{{ membership.user.name }}</th>
+                      <td>{{ membership.user.email }}</td>
+                      <td>{% if membership.is_group_manager %}
+                          <i class="fas fa-check fa-sm"></i>
+                      {% else %}
+                          <i class="fas fa-times fa-sm"></i>
+                      {% endif %}</td>
+                      <td>{{ membership.join_date|date }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% if is_group_manager %}
+                  <p>
+                      <a href="{% url "add_member_to_group" group_pk=group.pk %}" class="btn btn-primary"><i class="fas fa-plus fa-sm"></i> Agregar miembro</a>
+                      <a href="{% url "edit_group" pk=group.pk %}" class="btn btn-primary"><i class="fas fa-edit fa-sm"></i> Editar</a>
+                      <a href="{% url "delete_group" pk=group.pk %}" class="btn btn-danger"><i class="fas fa-trash-alt fa-sm"></i> Eliminar</a>
+                  </p>
+                  {% endif %}
             </div>
           </div>
+          <!-- /.container-fluid -->
         </div>
       </div>
       <!-- End of Main Content -->
@@ -194,6 +234,8 @@
         <div class=" py-2 container my-auto">
           <div class="copyright text-center my-auto">
             Contáctenos: <a href="{% url 'contactus' %}">NexusMap</a>
+            |
+            <a href="#" onclick="introJs().start()">Visita guiada</a>
           </div>
         </div>
         <div class="container my-auto">
@@ -245,11 +287,8 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
-  <script src="{% static 'js/notify.min.js' %}"></script>
 
-  <!-- Hace la Magia-->
   <script src="{% static 'js/base.js' %}"></script>
-
 </body>
 
 </html>

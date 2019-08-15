@@ -60,7 +60,6 @@ window.setInterval(function() {
 }, 5000); // Update the different "state" checkboxes every 5 secs
 
 var app;
-var user;
 
 $(document).ready(function() {
   $("#close-well").click(function() {
@@ -99,17 +98,11 @@ $(document).ready(function() {
     }
   });
 
-  user = sessionStorage.getItem("user");
   if (user != null) {
-    user = JSON.parse(user);
 
     $.ajax({
       url: "get_my_classes",
       method: "POST",
-      data: {
-        "username": user.EMAIL,
-        "password": user.PASSWORD,
-      },
       success: function(data, status) {
         let cls = data.classes;
         if (cls.length == 0) {
@@ -140,11 +133,7 @@ $(document).ready(function() {
     $("section#tabla_clases").append("<div class='alert alert-warning' role='alert'>¡Inicie sesión para ver su lista de clases!</div>");
   }
 
-  if (user) {
-    $("#username").val(user.EMAIL);
-    $("#password").val(user.PASSWORD);
-    $("#backurl").val(location.href);
-  }
+  $("#backurl").val(location.href);
 
   $("#uploadCalForm").attr("action", "upload_calendar");
 
@@ -203,20 +192,9 @@ $(document).ready(function() {
 
   // Call /poll endpoint every 10 seconds
   setInterval(function() {
-    var user = sessionStorage.getItem("user");
-    if (user != null) {
-      user = JSON.parse(user);
-    } else {
-      return;
-    }
-
     $.ajax({
       url: "poll",
       method: "POST",
-      data: {
-        "username": user.EMAIL,
-        "password": user.PASSWORD,
-      },
       success: function(data, status) {
         let pos_requests = data.requests;
         for (let pr of pos_requests) {
@@ -247,18 +225,11 @@ function denyRequest() {
   if (notifiedRequest == null) {
     return;
   }
-  var user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
-  } else {
-    return;
-  }
+
   $.ajax({
     url: "publish_my_position",
     method: "POST",
     data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
       "friend_email": notifiedRequest.CREADOR_EMAIL,
       "decision": "REJECT",
       "latitude": -1,
@@ -277,18 +248,10 @@ function acceptRequest() {
     return;
   }
 
-  var user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
-  } else {
-    return;
-  }
   $.ajax({
     url: "publish_my_position",
     method: "POST",
     data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD,
       "friend_email": notifiedRequest.CREADOR_EMAIL,
       "decision": "ACCEPT",
       "latitude": myCurrentPos.coords.latitude,

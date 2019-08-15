@@ -156,10 +156,11 @@ class Event(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=100)
     creation_date = models.DateTimeField(auto_now_add=True)
-    members = models.ManyToManyField(User, through = "Membership")
+    members = models.ManyToManyField(User, through="Membership")
 
-    def to_dict(self):
-        return {"name": self.name, "creation_date": self.creation_date, "pk": self.pk}
+    def to_dict(self, user):
+        return {"name": self.name, "creation_date": self.creation_date, "pk": self.pk,
+                "you_are_admin": self.memberships.get(user=user).is_group_manager}
 
     def __str__(self):
         return f"Group {self.name}"

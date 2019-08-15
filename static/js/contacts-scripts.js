@@ -1,10 +1,7 @@
 var app;
-var user;
 
 $(document).ready(function() {
-  user = sessionStorage.getItem("user");
   if (user != null) {
-    user = JSON.parse(user);
     getMyFriends();
   }
 
@@ -106,10 +103,6 @@ function getMyFriends() {
   $.ajax({
     url: "get_friends_groups",
     method: "POST",
-    data: {
-      "username": user.EMAIL,
-      "password": user.PASSWORD
-    },
     success: function(data, status) {
       app.friends = data.friends;
 	  app.groups = data.groups;

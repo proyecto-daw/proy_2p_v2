@@ -1,6 +1,6 @@
 $(document).ready(function() {
-  updateUserDropdown();
-  updateAdminButton();
+  //updateUserDropdown();
+  // updateAdminButton();
 
   pingServer();
 

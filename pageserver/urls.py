@@ -39,6 +39,7 @@ urlpatterns = [
     path('logout', views.logout_view, name="logout"),
     path('profile', views.user_profile, name="user_profile"),
     path('register', views.register, name="register"),
+    path('signup', api_views.signup, name="signup"),
 
     path('get_my_classes', api_views.my_classes, name="my_classes"),
     path('get_my_events', api_views.my_events, name="my_events"),
@@ -59,4 +60,10 @@ urlpatterns = [
     path('stats/visits-by-time-period', api_views.visits_by_time_period, name="stats_visits_by_time_period"),
     path('reports/visits-by-page', views.visits_by_page, name="reports_visits_by_page"),
     path('reports/visits-by-time-period', views.visits_by_time_period, name="reports_visits_by_time_period"),
+
+    path('groups/<int:pk>', views.GroupDetailView.as_view(), name="group_detail"),
+    path('groups/create', views.GroupCreateView.as_view(), name="group_create"),
+    path('groups/<int:pk>/edit', views.GroupUpdateView.as_view(), name="edit_group"),
+    path('groups/<int:group_pk>/add_member', views.GroupMemberAddView.as_view(), name="add_member_to_group"),
+    path('groups/<int:pk>/delete', views.GroupDeleteView.as_view(), name="delete_group"),
 ]

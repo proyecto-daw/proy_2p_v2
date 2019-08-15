@@ -76,7 +76,10 @@ class TrackingRequestViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsManagerOfGroup]
+
+    def get_serializer_context(self):
+        return {'request': self.request}
 
     def get_queryset(self):
         if self.request.user.is_anonymous:
@@ -88,7 +91,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 def get_friends_groups(request):
     if request.user.is_authenticated:
         return JsonResponse({"friends": [f.to_friend_dict() for f in request.user.friends.all()],
-                             "groups": [g.to_dict() for g in request.user.group_set.all()]})
+                             "groups": [g.to_dict(request.user) for g in request.user.group_set.all()]})
     else:
         return JsonResponse({"friends": [], "groups": []})
 
@@ -263,6 +266,17 @@ def show_my_position(request):
 
 
 @csrf_exempt
+def signup(request):
+    user = User.objects.create_user(username=request.POST["USERNAME"],
+                                    name=request.POST["NAMES"] + " " + request.POST["LASTNAMES"],
+                                    email=request.POST["EMAIL"],
+                                    password=request.POST["PASSWORD"],
+                                    career=request.POST["CAREER"])
+    user.save()
+    return JsonResponse({"members": [user.to_dict()]})
+
+
+@csrf_exempt
 def my_classes(request):
     if request.user.is_authenticated:
         today_index = ddt.today().isoweekday()  # Monday is 1 and Sunday is 7
@@ -332,8 +346,8 @@ def ping(request):
     username = request.user.username if request.user.is_authenticated else "anonymous"
 
     client = InfluxDBClient("ec2-18-233-170-234.compute-1.amazonaws.com", 8086, "***", "***", "hits")
-    client.write_points(
-        [{"measurement": "visit", "tags": {"page": request.POST["page"]}, "fields": {"user": username}}])
+    # client.write_points(
+    #     [{"measurement": "visit", "tags": {"page": request.POST["page"]}, "fields": {"user": username}}])
     return HttpResponse()
 
 

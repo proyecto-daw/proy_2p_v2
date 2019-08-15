@@ -1,11 +1,6 @@
 var app;
-var user;
 
 $(document).ready(function() {
-  user = sessionStorage.getItem("user");
-  if (user != null) {
-    user = JSON.parse(user);
-  }
 
   if (localStorage.getItem("showBannerEvents")) {
     $("#welcome").hide();
