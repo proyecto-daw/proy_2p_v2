@@ -58,6 +58,7 @@ urlpatterns = [
     path('ping', api_views.ping, name="ping"),
     path('stats/visits-by-page', api_views.visits_by_page, name="stats_visits_by_page"),
     path('stats/visits-by-time-period', api_views.visits_by_time_period, name="stats_visits_by_time_period"),
+    path('stats/bargraph', api_views.bargraph_stats, name="stats_bargraph"),
     path('reports/visits-by-page', views.visits_by_page, name="reports_visits_by_page"),
     path('reports/visits-by-time-period', views.visits_by_time_period, name="reports_visits_by_time_period"),
 

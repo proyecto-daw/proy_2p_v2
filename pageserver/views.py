@@ -65,10 +65,10 @@ def contactus(request):
     if request.method == 'POST':
         formulario = FormularioContactanos(request.POST)
         if formulario.is_valid():
-            asunto = str(formulario.cleaned_data.get("nombres"))+" "+str(formulario.cleaned_data.get("apellidos"))\
-                     +" quiere contactartese contigo"
+            asunto = str(formulario.cleaned_data.get("nombres")) + " " + str(formulario.cleaned_data.get("apellidos")) \
+                     + " quiere contactarse contigo"
 
-            datos ="    Nombres:               {0}\n " \
+            datos = "    Nombres:               {0}\n " \
                     "   Apellidos:             {1}\n " \
                     "   Correo electronico:    {2}\n " \
                     "   Fecha de Nacimiento:   {3}\n " \
@@ -81,20 +81,20 @@ def contactus(request):
                 formulario.cleaned_data.get("lugar_origen"),
                 formulario.cleaned_data.get("comentarios"))
 
-            mensaje = "!!Una persona a escrito para contactarse!!"+"\n " \
-                        "Y nos a dejado los siguientes datos: \n \n \n"+datos
+            mensaje = "Una persona ha escrito para contactarse." + "\n " \
+                                                                   "Ha dejado los siguientes datos: \n \n \n" + datos
 
             mode = ModelForm.create(formulario.cleaned_data.get("nombres"),
-                            formulario.cleaned_data.get("apellidos"),
-                            formulario.cleaned_data.get("correo"),
-                            formulario.cleaned_data.get("fecha_de_nacimiento"),
-                            formulario.cleaned_data.get("lugar_origen"),
-                            formulario.cleaned_data.get("comentarios"))
+                                    formulario.cleaned_data.get("apellidos"),
+                                    formulario.cleaned_data.get("correo"),
+                                    formulario.cleaned_data.get("fecha_de_nacimiento"),
+                                    formulario.cleaned_data.get("lugar_origen"),
+                                    formulario.cleaned_data.get("comentarios"))
 
-            mail = EmailMessage(asunto, mensaje,to=['nexusmap2019@gmail.com'])
+            mail = EmailMessage(asunto, mensaje, to=['nexusmap2019@gmail.com'])
             mail.send()
             mode.save()
-            return render(request,"pageserver/contactusAgradecimiento.html")
+            return render(request, "pageserver/contactusAgradecimiento.html")
     else:
         formulario = FormularioContactanos()
     return render(request, "pageserver/contactus.html", {'form': formulario})
@@ -119,11 +119,12 @@ def login(request):
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect("index")
+            print()
+            return redirect(request.POST.get("next", "index") or "index")
         else:
-            return render(request, "pageserver/login.html")
+            return render(request, "pageserver/login.html", {"nextUrl": request.POST.get("next", "")})
     else:
-        return render(request, "pageserver/login.html")
+        return render(request, "pageserver/login.html", {"nextUrl": request.GET.get("next", "")})
 
 
 def logout_view(request):

@@ -346,8 +346,8 @@ def ping(request):
     username = request.user.username if request.user.is_authenticated else "anonymous"
 
     client = InfluxDBClient("ec2-18-233-170-234.compute-1.amazonaws.com", 8086, "***", "***", "hits")
-    # client.write_points(
-    #     [{"measurement": "visit", "tags": {"page": request.POST["page"]}, "fields": {"user": username}}])
+    client.write_points(
+        [{"measurement": "visit", "tags": {"page": request.POST["page"]}, "fields": {"user": username}}])
     return HttpResponse()
 
 
@@ -371,3 +371,13 @@ def visits_by_time_period(request):
         f"SELECT count(*) as visits FROM \"hits\"..\"visit\" WHERE time > now() - {request.GET['limit']} GROUP BY time({request.GET['period']})")
 
     return JsonResponse(list(hits.get_points()), safe=False)
+
+
+def bargraph_stats(request):
+    return JsonResponse(
+        {"events": {"complete": Event.objects.filter(start_datetime__lt=datetime.datetime.now()).count(),
+                    "saved": Event.objects.filter(users_who_saved__isnull=False).count(),
+                    "all": Event.objects.all().count()},
+         "users": {"loggedIn": User.objects.filter(
+             last_login__gte=datetime.datetime.now() - datetime.timedelta(days=2)).count(),
+                   "all": User.objects.all().count()}})

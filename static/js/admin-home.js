@@ -22,11 +22,29 @@ $(document).ready(function () {
         populateLineChart(p, l, LINE_UNITS[l]);
     });
 
-    $("#downloadLinePeriodReportButton").click(function(){
+    $("#downloadLinePeriodReportButton").click(function () {
         window.location = "reports/" + linePartialUrl;
     });
 
-    $("#downloadPiePeriodReportButton").click(function(){
+    $("#downloadPiePeriodReportButton").click(function () {
         window.location = "reports/" + piePartialUrl;
     });
+
+    $.ajax({
+        url: "stats/bargraph",
+        method: "GET",
+        success: function (data, status) {
+            let eventsComplete = data.events.complete * 100 / data.events.all;
+            $("span#bargraph1text").text(data.events.complete + "/" + data.events.all + " (" + eventsComplete + "%)");
+            $("div#bargraph1bar").attr("style", "width: " + eventsComplete + "%");
+
+            let usersActive = data.users.loggedIn * 100 / data.users.all;
+            $("span#bargraph2text").text(data.users.loggedIn + "/" + data.users.all + " (" + usersActive + "%)");
+            $("div#bargraph2bar").attr("style", "width: " + usersActive + "%");
+
+            let savedEvents = data.events.saved * 100 / data.events.all;
+            $("span#bargraph3text").text(data.events.saved + "/" + data.events.all + " (" + savedEvents + "%)");
+            $("div#bargraph3bar").attr("style", "width: " + savedEvents + "%");
+        }
+    })
 });

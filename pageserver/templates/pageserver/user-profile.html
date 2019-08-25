@@ -197,19 +197,23 @@
                   <form action="/action_page.php">
                     <div class="form-group">
                       <label for="nombre">Nombre:</label>
-                      <input class="form-control" type="text" id="nombre" name="firstname" value="{{ user.name }}"readonly>
+                      <input class="form-control" type="text" id="nombre" name="firstname" value="{{ user.name }}" readonly>
                     </div>
                     <div class="form-group">
                       <label for="n_usuario">Nombre de Usuario:</label>
-                      <input class="form-control" type="text" id="n_usuario" name="firstname" value="{{ user.username }}"readonly>
+                      <input class="form-control" type="text" id="n_usuario" name="firstname" value="{{ user.username }}" readonly>
                     </div>
                     <div class="form-group">
                       <label for="correo">E-mail:</label>
-                      <input class="form-control" type="text" id="correo" name="correo" value="{{ user.email }}"readonly>
+                      <input class="form-control" type="text" id="correo" name="correo" value="{{ user.email }}" readonly>
                     </div>
                     <div class="form-group">
                       <label for="carrera">Carrera:</label>
-                      <input class="form-control" type="text" id="carrera" name="carrera" value="{{ user.career }}"readonly>
+                      <input class="form-control" type="text" id="carrera" name="carrera" value="{{ user.career }}" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="num_friends">Número de amigos:</label>
+                      <input class="form-control" type="number" id="num_friends" name="num_friends" value="{{ user.friends|length }}" readonly>
                     </div>
                   </form>
                 </div>
@@ -357,7 +361,7 @@
         <div class="modal-body">Confirme si desea cerrar su sesi&oacute;n.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="logout">Cerrar sesi&oacute;n</a>
+          <a class="btn btn-primary" href="/logout">Cerrar sesi&oacute;n</a>
         </div>
       </div>
     </div>
