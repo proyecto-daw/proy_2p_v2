@@ -68,12 +68,12 @@ def contactus(request):
             asunto = str(formulario.cleaned_data.get("nombres")) + " " + str(formulario.cleaned_data.get("apellidos")) \
                      + " quiere contactarse contigo"
 
-            datos = "    Nombres:               {0}\n " \
-                    "   Apellidos:             {1}\n " \
-                    "   Correo electronico:    {2}\n " \
-                    "   Fecha de Nacimiento:   {3}\n " \
-                    "   Lugar de Origen:       {4}\n" \
-                    "   Comentarios:           {5}\n".format(
+            datos = "   Nombres:\t\t\t\t{0}\n " \
+                    "   Apellidos:\t\t\t\t{1}\n " \
+                    "   Correo electronico:\t\t{2}\n " \
+                    "   Fecha de Nacimiento:\t{3}\n " \
+                    "   Lugar de Origen:\t\t{4}\n" \
+                    "   Comentarios:\t\t\t\t{5}\n".format(
                 formulario.cleaned_data.get("nombres"),
                 formulario.cleaned_data.get("apellidos"),
                 formulario.cleaned_data.get("correo"),
