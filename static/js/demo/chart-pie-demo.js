@@ -21,10 +21,10 @@ function populatePieChart(period) {
         data: {
           labels: data.map(x => x[0]),
           datasets: [{
-            data: data.map(x => x[1]),
+            data: data.map(x => x[1])/*,
             backgroundColor: palette('tol', data.length).map(function (hex) {
               return '#' + hex;
-            }),
+            })*/,
           }],
         },
         options: {
