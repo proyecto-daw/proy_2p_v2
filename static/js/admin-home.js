@@ -34,6 +34,7 @@ $(document).ready(function () {
         url: "stats/bargraph",
         method: "GET",
         success: function (data, status) {
+            console.log(data);
             let eventsComplete = data.events.complete * 100 / data.events.all;
             $("span#bargraph1text").text(data.events.complete + "/" + data.events.all + " (" + eventsComplete + "%)");
             $("div#bargraph1bar").attr("style", "width: " + eventsComplete + "%");

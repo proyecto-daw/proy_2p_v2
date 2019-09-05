@@ -1,5 +1,5 @@
 from django.contrib import auth
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 
@@ -378,7 +378,7 @@ def visits_by_time_period(request):
 def bargraph_stats(request):
     return JsonResponse(
         {"events": {"complete": Event.objects.filter(start_datetime__lt=datetime.datetime.now()).count(),
-                    "saved": Event.objects.filter(users_who_saved__isnull=False).count(),
+                    "saved": Event.objects.annotate(num_saved_users=Count("users_who_saved")).filter(num_saved_users__gt=0).count(),
                     "all": Event.objects.all().count()},
          "users": {"loggedIn": User.objects.filter(
              last_login__gte=datetime.datetime.now() - datetime.timedelta(days=2)).count(),
