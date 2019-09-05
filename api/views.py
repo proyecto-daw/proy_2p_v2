@@ -1,3 +1,4 @@
+from django.contrib import auth
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
@@ -273,6 +274,7 @@ def signup(request):
                                     password=request.POST["PASSWORD"],
                                     career=request.POST["CAREER"])
     user.save()
+    auth.login(request, user)
     return JsonResponse({"members": [user.to_dict()]})
 
 
